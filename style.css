@@ -709,3 +709,15 @@ code {
         font-size: 2.1rem;
     }
 }
+/* DARK MODE */
+body.dark-mode {
+    --bg: #0f172a;
+    --panel: #1e293b;
+    --panel-soft: #334155;
+    --text: #f8fafc;
+    --line: #475569;
+}
+body.dark-mode .sidebar { background: #020617; }
+body.dark-mode table { color: #f8fafc; }
+body.dark-mode tbody tr:hover { background: #334155; }
+body.dark-mode input, body.dark-mode select, body.dark-mode textarea { background: #1e293b; color: #fff; }
