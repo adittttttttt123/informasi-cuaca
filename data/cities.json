@@ -43,9 +43,10 @@
     {
         "name": "papua",
         "country": "Indonesia",
-        "category": "Ibukota",
-        "notes": "",
+        "category": "Wisata",
+        "notes": "kekayaan alam luar biasa, keanekaragaman budaya, dan potensi sumber daya alamnya.",
         "id": 7,
-        "created_at": "2026-06-21T13:07:35+02:00"
+        "created_at": "2026-06-21T13:07:35+02:00",
+        "updated_at": "2026-06-21T13:17:18+02:00"
     }
 ]
