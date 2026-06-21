@@ -4,31 +4,47 @@
         "name": "Jakarta",
         "country": "Indonesia",
         "category": "Ibukota",
-        "notes": "Kota utama untuk pantauan cuaca harian.",
-        "created_at": "2026-06-19T00:00:00+07:00"
+        "notes": "Pusat pemerintahan dan perekonomian Indonesia.",
+        "created_at": "2026-06-21T14:30:00+07:00"
     },
     {
         "id": 2,
-        "name": "Tokyo",
-        "country": "Japan",
+        "name": "Surabaya",
+        "country": "Indonesia",
         "category": "Bisnis",
-        "notes": "Kota favorit untuk pembanding cuaca Asia Timur.",
-        "created_at": "2026-06-19T00:00:00+07:00"
+        "notes": "Kota terbesar kedua di Indonesia dan pusat perdagangan Jawa Timur.",
+        "created_at": "2026-06-21T14:30:00+07:00"
     },
     {
         "id": 3,
-        "name": "London",
-        "country": "United Kingdom",
+        "name": "Bandung",
+        "country": "Indonesia",
         "category": "Wisata",
-        "notes": "Sering dipakai sebagai contoh kota dengan cuaca berubah cepat.",
-        "created_at": "2026-06-19T00:00:00+07:00"
+        "notes": "Kota kembang dengan udara sejuk dan destinasi wisata populer.",
+        "created_at": "2026-06-21T14:30:00+07:00"
     },
     {
-        "name": "Surakarta",
+        "id": 4,
+        "name": "Yogyakarta",
+        "country": "Indonesia",
+        "category": "Pendidikan",
+        "notes": "Kota budaya dan pusat pendidikan dengan banyak peninggalan bersejarah.",
+        "created_at": "2026-06-21T14:30:00+07:00"
+    },
+    {
+        "id": 5,
+        "name": "Makassar",
+        "country": "Indonesia",
+        "category": "Favorit",
+        "notes": "Gerbang Indonesia Timur dengan kuliner khas dan pantai Losari.",
+        "created_at": "2026-06-21T14:30:00+07:00"
+    },
+    {
+        "name": "Medan",
         "country": "Indonesia",
         "category": "Favorit",
         "notes": "",
-        "id": 4,
-        "created_at": "2026-06-19T18:04:23+02:00"
+        "id": 6,
+        "created_at": "2026-06-21T09:34:53+02:00"
     }
 ]

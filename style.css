@@ -44,7 +44,8 @@ textarea {
 }
 
 .sidebar {
-    min-height: 100vh;
+    height: 100vh;
+    overflow-y: auto;
     padding: 24px;
     background:
         linear-gradient(180deg, #0b1220 0%, #123432 58%, #201a12 100%);
@@ -647,8 +648,10 @@ code {
     }
 
     .sidebar {
+        height: auto;
         min-height: auto;
         position: static;
+        overflow-y: visible;
     }
 
     .nav-menu {

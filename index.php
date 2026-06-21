@@ -17,23 +17,39 @@ function ensureDataFile(): void
                 'name' => 'Jakarta',
                 'country' => 'Indonesia',
                 'category' => 'Ibukota',
-                'notes' => 'Kota utama untuk pantauan cuaca harian.',
+                'notes' => 'Pusat pemerintahan dan perekonomian Indonesia.',
                 'created_at' => date('c'),
             ],
             [
                 'id' => 2,
-                'name' => 'Tokyo',
-                'country' => 'Japan',
+                'name' => 'Surabaya',
+                'country' => 'Indonesia',
                 'category' => 'Bisnis',
-                'notes' => 'Kota favorit untuk pembanding cuaca Asia Timur.',
+                'notes' => 'Kota terbesar kedua di Indonesia dan pusat perdagangan Jawa Timur.',
                 'created_at' => date('c'),
             ],
             [
                 'id' => 3,
-                'name' => 'London',
-                'country' => 'United Kingdom',
+                'name' => 'Bandung',
+                'country' => 'Indonesia',
                 'category' => 'Wisata',
-                'notes' => 'Sering dipakai sebagai contoh kota dengan cuaca berubah cepat.',
+                'notes' => 'Kota kembang dengan udara sejuk dan destinasi wisata populer.',
+                'created_at' => date('c'),
+            ],
+            [
+                'id' => 4,
+                'name' => 'Yogyakarta',
+                'country' => 'Indonesia',
+                'category' => 'Pendidikan',
+                'notes' => 'Kota budaya dan pusat pendidikan dengan banyak peninggalan bersejarah.',
+                'created_at' => date('c'),
+            ],
+            [
+                'id' => 5,
+                'name' => 'Makassar',
+                'country' => 'Indonesia',
+                'category' => 'Favorit',
+                'notes' => 'Gerbang Indonesia Timur dengan kuliner khas dan pantai Losari.',
                 'created_at' => date('c'),
             ],
         ];
@@ -73,16 +89,13 @@ function findCity(array $cities, int $id): ?array
 function validateCity(array $input): array
 {
     $name = trim((string) ($input['name'] ?? ''));
-    $country = trim((string) ($input['country'] ?? ''));
+    $country = 'Indonesia';
     $category = trim((string) ($input['category'] ?? ''));
     $notes = trim((string) ($input['notes'] ?? ''));
     $errors = [];
 
     if ($name === '' || strlen($name) < 2) {
         $errors[] = 'Nama kota wajib diisi minimal 2 karakter.';
-    }
-    if ($country === '') {
-        $errors[] = 'Negara wajib diisi.';
     }
     if ($category === '') {
         $errors[] = 'Kategori wajib dipilih.';
@@ -187,7 +200,7 @@ $mainCity = $cities[0] ?? null;
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistem Informasi Cuaca Kota</title>
+    <title>Sistem Informasi Cuaca Kota Indonesia</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -211,7 +224,7 @@ $mainCity = $cities[0] ?? null;
     <main class="app-shell">
         <header class="topbar">
             <div>
-                <p class="eyebrow">Final Project Web Service</p>
+                <p class="eyebrow">Aplikasi Cuaca Kota Indonesia</p>
                 <h1><?= $page === 'dashboard' ? 'Dashboard Cuaca Kota' : h(ucfirst($page)) ?></h1>
             </div>
             <a class="primary-action" href="index.php?page=add"><i data-lucide="plus"></i>Tambah Data</a>
@@ -234,7 +247,7 @@ $mainCity = $cities[0] ?? null;
                 <div class="hero-copy">
                     <span class="status-pill"><i data-lucide="radio"></i>Live dari Open-Meteo API</span>
                     <h2>Pantau kota favorit, kelola datanya, dan tampilkan cuaca real-time dalam satu dashboard.</h2>
-                    <p>Project ini menggabungkan CRUD PHP Native, database lokal JSON, pencarian data, dan konsumsi API eksternal untuk demo UAS Web Service.</p>
+                    <p>Aplikasi ini menggabungkan CRUD PHP Native, database lokal JSON, pencarian data, dan konsumsi API eksternal untuk menampilkan informasi cuaca kota di Indonesia secara real-time.</p>
                     <div class="hero-actions">
                         <a class="primary-action inline" href="index.php?page=list"><i data-lucide="table-2"></i>Lihat Data</a>
                         <a class="ghost-action" href="index.php?page=about"><i data-lucide="book-open"></i>Dokumentasi</a>
@@ -385,7 +398,7 @@ $mainCity = $cities[0] ?? null;
                     </label>
                     <label>
                         Negara
-                        <input required name="country" value="<?= h($formData['country']) ?>" placeholder="Contoh: Indonesia">
+                        <input required name="country" value="Indonesia" readonly style="background-color: rgba(255, 255, 255, 0.05); cursor: not-allowed; opacity: 0.7;">
                     </label>
                     <label>
                         Kategori
@@ -431,8 +444,8 @@ $mainCity = $cities[0] ?? null;
         <?php if ($page === 'about'): ?>
             <section class="panel docs">
                 <p class="eyebrow">Dokumentasi singkat</p>
-                <h2>Sistem Informasi Cuaca dan Kota</h2>
-                <p>Project ini memenuhi instruksi UAS Web Service: PHP Native, CRUD data kota favorit, dashboard, daftar data, form tambah/edit, hapus data, search/filter, dan integrasi API eksternal Open-Meteo.</p>
+                <h2>Sistem Informasi Cuaca Kota Indonesia</h2>
+                <p>Aplikasi ini dikembangkan menggunakan PHP Native untuk mengelola data kota favorit (CRUD), menampilkan ringkasan cuaca di dashboard, melakukan pencarian dan penyaringan data, serta berintegrasi langsung dengan API eksternal Open-Meteo.</p>
                 <div class="docs-grid">
                     <div><strong>Data utama</strong><span>Kota favorit disimpan di <code>data/cities.json</code>.</span></div>
                     <div><strong>API</strong><span><code>api.php</code> mengambil geocoding dan cuaca dari Open-Meteo.</span></div>

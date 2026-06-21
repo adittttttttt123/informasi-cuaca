@@ -12,17 +12,40 @@ if ($city === '') {
 
 function fetchJson(string $url): array
 {
-    $context = stream_context_create([
-        'http' => [
-            'timeout' => 8,
-            'header' => "User-Agent: CuacaKota-UAS/1.0\r\n",
-        ],
-    ]);
-    $response = @file_get_contents($url, false, $context);
-    if ($response === false) {
-        throw new RuntimeException('Gagal menghubungi API eksternal.');
+    $userAgent = 'CuacaKota-App/1.0';
+    $response = false;
+
+    if (function_exists('curl_init')) {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 8);
+        curl_setopt($ch, CURLOPT_USERAGENT, $userAgent);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        $response = curl_exec($ch);
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+
+        if ($response === false) {
+            throw new RuntimeException('Gagal menghubungi API eksternal (cURL error).');
+        }
+        if ($httpCode >= 400) {
+            throw new RuntimeException('API eksternal mengembalikan respons error ' . $httpCode);
+        }
+    } else {
+        $context = stream_context_create([
+            'http' => [
+                'timeout' => 8,
+                'header' => "User-Agent: {$userAgent}\r\n",
+            ],
+        ]);
+        $response = @file_get_contents($url, false, $context);
+        if ($response === false) {
+            throw new RuntimeException('Gagal menghubungi API eksternal.');
+        }
     }
-    $data = json_decode($response, true);
+
+    $data = json_decode((string) $response, true);
     if (!is_array($data)) {
         throw new RuntimeException('Respons API tidak valid.');
     }
@@ -30,16 +53,34 @@ function fetchJson(string $url): array
 }
 
 try {
-    $geoUrl = 'https://geocoding-api.open-meteo.com/v1/search?name=' . rawurlencode($city) . '&count=1&language=id&format=json';
+    // Request up to 10 results to search for an Indonesian city match
+    $geoUrl = 'https://geocoding-api.open-meteo.com/v1/search?name=' . rawurlencode($city) . '&count=10&language=id&format=json';
     $geoData = fetchJson($geoUrl);
 
-    if (empty($geoData['results'][0])) {
+    $location = null;
+    if (!empty($geoData['results'])) {
+        foreach ($geoData['results'] as $res) {
+            if (
+                (isset($res['country_code']) && strtolower($res['country_code']) === 'id') ||
+                (isset($res['country']) && strcasecmp($res['country'], 'Indonesia') === 0)
+            ) {
+                $location = $res;
+                break;
+            }
+        }
+
+        // If no explicit Indonesia match is found, check if the query matches a city but didn't resolve country info
+        if (!$location) {
+            http_response_code(404);
+            echo json_encode(['error' => 'Kota di Indonesia tidak ditemukan.']);
+            exit;
+        }
+    } else {
         http_response_code(404);
         echo json_encode(['error' => 'Kota tidak ditemukan.']);
         exit;
     }
 
-    $location = $geoData['results'][0];
     $lat = $location['latitude'];
     $lon = $location['longitude'];
     $timezone = $location['timezone'] ?? 'auto';
@@ -52,7 +93,7 @@ try {
 
     echo json_encode([
         'city' => $location['name'] ?? $city,
-        'country' => $location['country'] ?? '',
+        'country' => $location['country'] ?? 'Indonesia',
         'timezone' => $weatherData['timezone'] ?? $timezone,
         'current' => $weatherData['current'] ?? [],
         'daily' => $weatherData['daily'] ?? [],
