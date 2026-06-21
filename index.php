@@ -124,6 +124,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $page = 'add';
     }
 
+    if ($action === 'export') {
+    header('Content-Type: text/csv');
+    header('Content-Disposition: attachment; filename="data_kota_' . date('Ymd_His') . '.csv"');
+    $output = fopen('php://output', 'w');
+    // Header CSV
+    fputcsv($output, ['ID', 'Nama', 'Negara', 'Kategori', 'Catatan', 'Dibuat']);
+    // Data
+    foreach ($cities as $city) {
+        fputcsv($output, [$city['id'], $city['name'], $city['country'], $city['category'], $city['notes'], $city['created_at']]);
+    }
+    fclose($output);
+    exit;
+}
+
     if ($action === 'update') {
         $id = (int) ($_POST['id'] ?? 0);
         [$errors, $formData] = validateCity($_POST);
@@ -179,6 +193,7 @@ $categories = array_values(array_unique(array_filter(array_map(fn($city) => $cit
 sort($categories);
 $selectedCity = isset($_GET['id']) ? findCity($cities, (int) $_GET['id']) : null;
 if (($page === 'edit' || $page === 'detail') && !$selectedCity && $_SERVER['REQUEST_METHOD'] !== 'POST') {
+    
     $page = 'list';
     $flash = 'Data kota tidak ditemukan.';
 }
@@ -219,6 +234,10 @@ $mainCity = $cities[0] ?? null;
             <a class="<?= $page === 'add' ? 'active' : '' ?>" href="index.php?page=add"><i data-lucide="plus-circle"></i>Tambah Kota</a>
             <a class="<?= $page === 'about' ? 'active' : '' ?>" href="index.php?page=about"><i data-lucide="file-text"></i>Dokumentasi</a>
         </nav>
+
+        <button onclick="toggleTheme()" style="width:100%; margin-top:20px; padding:10px; cursor:pointer;">
+        <i data-lucide="moon"></i> Toggle Tema
+        </button>
     </aside>
 
     <main class="app-shell">
